@@ -1,0 +1,146 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sarie's Mystery Gift ❤️</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 22px;
+  font-family: Arial, sans-serif;
+  color: #fff;
+  text-align: center;
+  background: linear-gradient(145deg, #240018, #850d45, #17001c);
+}
+.container { width: 100%; max-width: 430px; }
+h1 { font-size: 30px; margin-bottom: 10px; }
+.subtitle { color: #ffd7e7; line-height: 1.6; }
+.boxes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 28px 0;
+}
+.gift {
+  min-width: 0;
+  padding: 17px 5px;
+  border: 2px solid #ffb6d0;
+  border-radius: 16px;
+  background: #ffffff12;
+  color: white;
+  cursor: pointer;
+  transition: .2s;
+}
+.gift .emoji { display: block; font-size: 44px; margin-bottom: 10px; }
+.gift .label { font-size: 14px; font-weight: bold; }
+.gift:active { transform: scale(.96); }
+.gift:disabled { cursor: not-allowed; opacity: .38; }
+.gift.chosen { border-color: #fff; background: #ffffff25; opacity: 1; }
+#result {
+  display: none;
+  margin-top: 20px;
+  padding: 24px 15px;
+  border-radius: 18px;
+  background: #ffffff18;
+  border: 1px solid #ffb6d0;
+}
+#prize { font-size: 25px; font-weight: bold; margin: 15px 0; }
+.heart { font-size: 32px; }
+footer { margin-top: 30px; color: #ffd7e7; font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="heart">❤️</div>
+  <h1>Hey, Sarie! 💕</h1>
+  <p class="subtitle">Someone special has a surprise for you.<br>
+  Choose wisely, my love!</p>
+
+  <h2>🎁 CHOOSE ONLY ONE 🎁</h2>
+  <p class="subtitle">Once you choose, the other two boxes will lock!</p>
+
+  <div class="boxes" id="boxes">
+    <button class="gift" data-box="1">
+      <span class="emoji">🎁</span>
+      <span class="label">BOX 1</span>
+    </button>
+    <button class="gift" data-box="2">
+      <span class="emoji">🎁</span>
+      <span class="label">BOX 2</span>
+    </button>
+    <button class="gift" data-box="3">
+      <span class="emoji">🎁</span>
+      <span class="label">BOX 3</span>
+    </button>
+  </div>
+
+  <div id="result">
+    <div class="heart">💝</div>
+    <h2>Your mystery gift!</h2>
+    <div id="prize"></div>
+    <p id="message"></p>
+    <p>With love, always ❤️</p>
+    <strong>— RiCk ❤️</strong>
+  </div>
+
+  <footer>Made with love, just for Sarie 💕</footer>
+</div>
+
+<script>
+const gifts = {
+  1: {
+    prize: "KSh 500 💵",
+    message: "A little something special, chosen with love! ❤️"
+  },
+  2: {
+    prize: "A Parcelled Gift 📦",
+    message: "Your surprise gift is waiting for you, my love! 🎀❤️"
+  },
+  3: {
+    prize: "Prayers 🙏❤️",
+    message: "May God protect you, bless you, guide you, and keep our love strong. 🙏💕"
+  }
+};
+
+const buttons = document.querySelectorAll(".gift");
+const savedChoice = localStorage.getItem("sarieGiftChoice");
+
+function reveal(choice) {
+  buttons.forEach(button => {
+    button.disabled = true;
+    if (button.dataset.box === String(choice)) {
+      button.classList.add("chosen");
+      button.querySelector(".emoji").textContent = "💝";
+    } else {
+      button.querySelector(".emoji").textContent = "🔒";
+    }
+  });
+
+  document.getElementById("prize").textContent = gifts[choice].prize;
+  document.getElementById("message").textContent = gifts[choice].message;
+  document.getElementById("result").style.display = "block";
+}
+
+if (savedChoice && gifts[savedChoice]) {
+  reveal(savedChoice);
+}
+
+buttons.forEach(button => {
+  button.addEventListener("click", () => {
+    if (localStorage.getItem("sarieGiftChoice")) return;
+
+    const choice = button.dataset.box;
+    localStorage.setItem("sarieGiftChoice", choice);
+    reveal(choice);
+  });
+});
+</script>
+</body>
+</html>
